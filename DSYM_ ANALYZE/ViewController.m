@@ -151,13 +151,20 @@ static NSString * const kUUIDIdentififer = @"kUUIDIdentififer";
 {
     if (self.sbErrorText.stringValue.length)
     {
-        __weak typeof(self) weakSelf = self;
-        NSString * armv = [SXAnalyze getArmvType:self.mArrUUID[self.matrixBtn.selectedRow]];
-        [self.analyze analyzeError:self.sbErrorText.stringValue armv:armv WithSuccess:^(NSString *sucess) {
-            weakSelf.sbResultText.string = sucess;
-        } failed:^(NSString *fail) {
-            [weakSelf showAlertWithMessage:fail];
-        }];
+        if (self.mArrUUID.count)
+        {
+            __weak typeof(self) weakSelf = self;
+            NSString * armv = [SXAnalyze getArmvType:self.mArrUUID[self.matrixBtn.selectedRow]];
+            [self.analyze analyzeError:self.sbErrorText.stringValue armv:armv WithSuccess:^(NSString *sucess) {
+                weakSelf.sbResultText.string = sucess;
+            } failed:^(NSString *fail) {
+                [weakSelf showAlertWithMessage:fail];
+            }];
+        }
+        else
+        {
+            [self showAlertWithMessage:@"请添加app或DSYM文件"];
+        }
     }
     else
     {
